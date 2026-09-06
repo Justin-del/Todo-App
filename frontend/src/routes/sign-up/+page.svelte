@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { authClient } from "$lib/AuthClient";
 	import { getConnectionToServerFailureMessage } from "$lib/Messages";
+	import SubmitButton from "../../components/Buttons/SubmitButton.svelte";
 
   let shouldShowPassword = $state(false);
 
@@ -8,12 +9,15 @@
   let password = $state('');
 
   let error_message:string | undefined = $state(undefined);
-  const signUp = async()=>{
+  let is_submitting  = $state(false);
+
+  const sign_up = async()=>{
     error_message = '';
+    is_submitting = true;
     try {
       const {error}  = await authClient.signUp.email({
         email:email_address,
-		    name:email_address,
+        name:email_address,
         password,
         callbackURL:'/'
       })
@@ -21,6 +25,7 @@
     }catch(error){
       error_message = getConnectionToServerFailureMessage('sign up');
     }
+    is_submitting = false;
   }
 </script>
 
@@ -41,7 +46,7 @@
     <label class="form-check-label" for="show-password">Show password</label>
   </div>
 
-  <button type="submit" class="btn btn-primary mb-3" onclick={signUp}>Sign Up</button>
+  <SubmitButton onclick={sign_up} class="btn btn-primary mb-3" text_when_submitting="Signing up" text_when_not_submitting="Sign up" is_submitting={is_submitting}></SubmitButton>
 </form>
 
 {#if typeof error_message === 'string'}
