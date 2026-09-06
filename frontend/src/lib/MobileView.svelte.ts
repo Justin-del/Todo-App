@@ -6,10 +6,10 @@ export function getIsMobileView(){
 }
 
 const onresize = ()=>{
-    isMobileView = window.innerWidth<=768;
+    isMobileView = window.innerWidth<=576;
 }
 
 if (browser){
-    isMobileView = window.innerWidth<=768;
+    isMobileView = window.innerWidth<=576;
     window.addEventListener('resize',onresize);
 }

@@ -1,16 +1,15 @@
-<script>
-	import { browser } from "$app/env";
+<script lang="ts">
+	import type { Snippet } from "svelte";
     import DesktopNavigation from "../Navigation/Desktop.svelte";
-    if (browser){
-        import('bootstrap');
-    }
+     const {children}:{children:Snippet<[]>} = $props();
 </script>
 
 <header>
     <DesktopNavigation />
 </header>
 
-<main>
+<main class="container">
+    {@render children()}
 </main>
 
 <style>

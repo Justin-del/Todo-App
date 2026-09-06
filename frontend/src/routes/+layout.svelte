@@ -9,5 +9,4 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<MainLayout>
-</MainLayout>
+<MainLayout {children}></MainLayout>

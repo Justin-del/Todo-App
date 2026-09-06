@@ -1,10 +1,12 @@
-<script>
+<script lang="ts">
+	import type { Snippet } from "svelte";
     import MobileNavigation from "../Navigation/Mobile.svelte";
+    const {children}:{children:Snippet<[]>} = $props();
 </script>
 
-
 <div>
-    <main>
+    <main class="container">
+        {@render children()}
     </main>
 
     <footer>
