@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { authClient } from "$lib/AuthClient";
+	import { getConnectionToServerFailureMessage } from "$lib/Messages";
 
   let shouldShowPassword = $state(false);
 
@@ -9,12 +10,16 @@
   let error_message:string | undefined = $state(undefined);
   const login = async()=>{
     error_message = '';
-    const {error}  = await authClient.signIn.email({
-      email:email_address,
-      password,
-      callbackURL:'/'
-    })
-    error_message = error?.message
+    try {
+      const {error}  = await authClient.signIn.email({
+        email:email_address,
+        password,
+        callbackURL:'/'
+      })
+      error_message = error?.message
+    }catch(error){
+      error_message = getConnectionToServerFailureMessage('login');
+    }
   }
 </script>
 
@@ -35,7 +40,7 @@
     <label class="form-check-label" for="show-password">Show password</label>
   </div>
 
-  <button type="submit" class="btn btn-primary" onclick={login}>Submit</button>
+  <button type="submit" class="btn btn-primary mb-3" onclick={login}>Login</button>
 </form>
 
 {#if typeof error_message === 'string'}
