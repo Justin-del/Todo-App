@@ -13,7 +13,7 @@
 </script>
 
 
-<button {...restProps}>
+<button {...restProps} disabled={is_submitting}>
     {#if is_submitting}
         <div class="spinner-border spinner-border-sm d-inline-block me-1 text-light" aria-hidden="true">
         </div>
