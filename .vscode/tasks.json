@@ -28,13 +28,26 @@
       "problemMatcher": []
     },
     {
-      "label": "Start Dev Servers",
-      "dependsOn": ["Start Backend", "Start Frontend"],
+      "label": "Start interactive sqlite repl for backend/Database.sqlite",
+      "type": "shell",
+      "command": "cd backend && sqlite3 Database.sqlite",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": ["/d", "/c"]
+        }
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Dev Servers and interactive sqlite repl for backend/Database.sqlite",
+      "dependsOn": ["Start Backend", "Start Frontend","Start interactive sqlite repl for backend/Database.sqlite"],
       "group": {
         "kind": "build",
         "isDefault": true
       },
       "problemMatcher": []
-    }
+    },
   ]
 }
