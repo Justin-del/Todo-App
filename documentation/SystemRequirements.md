@@ -11,7 +11,7 @@
 
 ### Todos
 <ul>
-    <li>Every todo should consist of a title and completion status.</li>
+    <li>Every todo should consist of a title,completion status, created at, and updated at.</li>
     <li>A todo can have an optional description.</li>
 </ul>
 
