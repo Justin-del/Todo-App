@@ -1,14 +1,32 @@
-<h1>System Requirements</h1>
+# System Requirements
 
-<h2>Security Requirements</h2>
+## Security Requirements
 <ul>
     <li>
         <strong>SR-01:</strong> Password must have at least 15 characters.
     </li>
 </ul>
 
-<h2>User Management Module</h2>
+## Data Requirements
+
+### Todos
 <ul>
-    <li><strong>FR-UM-01:</strong> User can sign up using an email and password.</li>
-    <li><strong>FR-UM-02:</strong> User can sign in using an email and password.</li>
+    <li>Every todo should consist of a title and completion status.</li>
+    <li>A todo can have an optional description.</li>
+</ul>
+
+## Functional Requirements
+
+### User Management Module
+<ul>
+    <li><strong>FR-UM-01:</strong> Users can sign up using an email address and password.</li>
+    <li><strong>FR-UM-02:</strong> Users can sign in using an email address and password.</li>
+</ul>
+
+### Todo Management Module
+<ul>
+    <li><strong>FR-TD-01:</strong> Users can create a todo.</li>
+    <li><strong>FR-TD-02:</strong> Users can edit todos that they owned.</li>
+    <li><strong>FR-TD-03:</strong> Users can view the todos that they owned.</li>
+    <li><strong>FR-TD-04:</strong> Users can remove the todos that they owned.</li>
 </ul>
