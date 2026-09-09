@@ -30,7 +30,7 @@
       const {error}  = await authClient.signIn.email({
         email:email_address,
         password,
-        callbackURL:'/'
+        callbackURL:'/todos'
       })
       error_message = error?.message;
     }catch(error){

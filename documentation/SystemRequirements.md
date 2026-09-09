@@ -11,7 +11,7 @@
 
 ### Todos
 <ul>
-    <li><strong>DR-TD-01:</strong> Every todo should consist of a title,completion status, created at, and updated at.</li>
+    <li><strong>DR-TD-01:</strong> Every todo should consist of a unique id, title,is_completed, created at, and updated at.</li>
     <li><strong>DR-TD-02:</strong> A todo can have an optional description.</li>
 </ul>
 
