@@ -13,6 +13,7 @@
 <ul>
     <li><strong>DR-TD-01:</strong> Every todo should consist of a unique id, title,is_completed, created at, and updated at.</li>
     <li><strong>DR-TD-02:</strong> A todo can have an optional description.</li>
+    <li><strong>DR-TD-03:</strong> One user can have 0 or more todos. Each todo belongs to only one user.</li>
 </ul>
 
 ## Functional Requirements
