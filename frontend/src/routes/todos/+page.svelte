@@ -1,5 +1,6 @@
 <script lang="ts">
     import type {todo} from "../../../../shared_types_between_frontend_and_backend"
+	import PageTitle from "../../components/PageTitle.svelte";
 	import Todo from "../../components/Todo.svelte";
     /**
      * Generate fake todo data for now.
@@ -8,7 +9,7 @@
 </script>
 
 <div class="d-flex flex-column" style="height:90%;max-height:90%;">
-    <h1 class="text-center">Todos</h1>
+    <PageTitle title="Todos"></PageTitle>
     <div class="flex-grow-1 overflow-auto">
         {#each todos as todo}
             <div class="d-contents mb-3">

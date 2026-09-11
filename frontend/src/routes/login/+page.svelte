@@ -3,6 +3,7 @@
 	import { isValidEmailAddress } from "$lib/Email";
 	import { getConnectionToServerFailureMessage } from "$lib/Messages";
 	import SubmitButton from "../../components/Buttons/SubmitButton.svelte";
+	import PageTitle from "../../components/PageTitle.svelte";
 
   let shouldShowPassword = $state(false);
 
@@ -40,7 +41,7 @@
   }
 </script>
 
-<h1 class="text-center">Login</h1>
+<PageTitle title="Login"></PageTitle>
 
 <form bind:this={form_element}>
   <div class="mb-3">
