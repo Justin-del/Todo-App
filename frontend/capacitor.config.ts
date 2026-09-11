@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'Todo App',
   webDir: 'build',
   server:{
-    appStartPath:"/todos.html"
+    appStartPath:"/todos.html",
   },
 };
 
