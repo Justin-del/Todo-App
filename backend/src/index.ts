@@ -1,16 +1,19 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
-import { auth } from './auth.js';
+import { auth } from './auth.js'
 import { cors } from 'hono/cors';
-import 'dotenv/config'
+import { useEnvironmentVariables } from './environment_variables.js';
 
 const app = new Hono()
+
+useEnvironmentVariables();
 
 app.use( 
 	"/api/auth/*", 
 	cors({ 
-		origin: process.env.FRONTEND_URL, 
+		origin: [process.env.FRONTEND_URL as string, process.env.MOBILE_APP_URL as string],
 		credentials: true, 
+		allowHeaders:['Content-Type']
 	}), 
 ); 
 

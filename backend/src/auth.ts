@@ -1,13 +1,15 @@
 import { betterAuth } from "better-auth";
 import Database from 'better-sqlite3'
-import 'dotenv/config'
+import { useEnvironmentVariables } from "./environment_variables.js";
+
+useEnvironmentVariables()
 
 export const auth = betterAuth({
-  baseURL:'http://localhost:3000',
+  baseURL:'https://localhost:3000',
   database:new Database('Database.sqlite'),
   emailAndPassword:{
     enabled:true,
     minPasswordLength:15
   },
-  trustedOrigins:[process.env.FRONTEND_URL as string],
+  trustedOrigins:[process.env.FRONTEND_URL as string, process.env.MOBILE_APP_URL as string],
 })

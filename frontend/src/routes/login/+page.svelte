@@ -2,6 +2,7 @@
 	import { authClient } from "$lib/AuthClient.svelte";
 	import { isValidEmailAddress } from "$lib/Email";
 	import { getConnectionToServerFailureMessage } from "$lib/Messages";
+	import { Capacitor } from "@capacitor/core";
 	import SubmitButton from "../../components/Buttons/SubmitButton.svelte";
 	import PageTitle from "../../components/PageTitle.svelte";
 
@@ -31,7 +32,7 @@
       const {error}  = await authClient.signIn.email({
         email:email_address,
         password,
-        callbackURL:'/todos'
+        callbackURL:Capacitor.isNativePlatform()?'/todos.html':'/todos'
       })
       error_message = error?.message;
     }catch(error){
