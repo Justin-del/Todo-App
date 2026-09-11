@@ -11,12 +11,12 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<div>
+<div class="d-flex flex-column">
 	<header>
 		<DesktopNavigation></DesktopNavigation>
 	</header>
 
-	<main class="container">
+	<main class="container flex-grow-1">
 		{@render children()}
 	</main>
 
@@ -28,6 +28,10 @@
 </div>
 
 <style>
+	main{
+		min-height:0;
+	}
+	
 	div{
         height:100svh;
 		--navigation-height:3rem;
@@ -48,11 +52,6 @@
 			background-color: var(--navigation-background-color);
 		}
 		
-
-        & main{
-            height:calc(100% - var(--navigation-height));
-        }
-
 		/**
 		Desktop specific styles
 		*/
