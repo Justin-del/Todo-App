@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { authClient } from "$lib/AuthClient";
+	import { authClient } from "$lib/AuthClient.svelte";
 	import { isValidEmailAddress } from "$lib/Email";
 	import { getConnectionToServerFailureMessage } from "$lib/Messages";
 	import SubmitButton from "../../components/Buttons/SubmitButton.svelte";

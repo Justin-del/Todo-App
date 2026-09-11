@@ -3,6 +3,7 @@
 	import "bootstrap/dist/css/bootstrap.min.css"
 	import DesktopNavigation from '../components/Navigation/Desktop.svelte';
 	import MobileNavigation from '../components/Navigation/Mobile.svelte';
+	import { getIsLoggedIn } from '$lib/AuthClient.svelte';
 	let { children } = $props();
 </script>
 
@@ -19,9 +20,11 @@
 		{@render children()}
 	</main>
 
-	<footer>
-		<MobileNavigation></MobileNavigation>
-	</footer>
+	{#if getIsLoggedIn()}
+		<footer>
+			<MobileNavigation></MobileNavigation>
+		</footer>
+	{/if}
 </div>
 
 <style>

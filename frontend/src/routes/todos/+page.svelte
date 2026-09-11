@@ -1,24 +1,21 @@
 <script lang="ts">
-	import { onMount } from "svelte";
     import type {todo} from "../../../../shared_types_between_frontend_and_backend"
 	import PageTitle from "../../components/PageTitle.svelte";
 	import Todo from "../../components/Todo.svelte";
-	import { authClient } from "$lib/AuthClient";
+	import { getIsAuthPending, getIsLoggedIn} from "$lib/AuthClient.svelte";
 	import { goto } from "$app/navigation";
+	import { browser } from "$app/env";
     /**
      * Generate fake todo data for now.
      */
     const todos:todo[] = $state([{id:crypto.randomUUID(),title:'This is a todo.', is_completed:true, created_at:new Date(), updated_at:new Date(),description:'This is the description of the todo.'},{id:crypto.randomUUID(),title:'Chiong Kai Yuan', is_completed:false, created_at:new Date(), updated_at:new Date(),description:'She has a sexy ass. I dream of fucking her butt.'},{id:crypto.randomUUID(),title:'Chiong Kai Yuan', is_completed:false, created_at:new Date(), updated_at:new Date(),description:'She has a sexy ass. I dream of fucking her butt.'}])  
 
-    const session = authClient.useSession();
-
     $effect(()=>{
-        const is_there_session = $session.data?.session !== undefined;
-        if (!$session.isPending && !is_there_session){
-            goto("/login",{replaceState:true})
-        }
-    })
-
+        if (!getIsAuthPending())
+            if (browser && !getIsLoggedIn()){
+                goto("/login",{replaceState:true})
+            }
+    });
 </script>
 
 <div class="d-flex flex-column" style="height:90%;max-height:90%;">
