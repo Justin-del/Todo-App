@@ -10,13 +10,14 @@
      */
     const todos:todo[] = $state([{id:crypto.randomUUID(),title:'This is a todo.', is_completed:true, created_at:new Date(), updated_at:new Date(),description:'This is the description of the todo.'},{id:crypto.randomUUID(),title:'Chiong Kai Yuan', is_completed:false, created_at:new Date(), updated_at:new Date(),description:'She has a sexy ass. I dream of fucking her butt.'},{id:crypto.randomUUID(),title:'Chiong Kai Yuan', is_completed:false, created_at:new Date(), updated_at:new Date(),description:'She has a sexy ass. I dream of fucking her butt.'}])  
 
-    onMount(async()=>{
-        const {data} = await authClient.getSession();
-        const is_there_session = data?.session !== undefined;
-        if (!is_there_session){
-            goto("/login",{replaceState:true});
+    const session = authClient.useSession();
+
+    $effect(()=>{
+        const is_there_session = $session.data?.session !== undefined;
+        if (!$session.isPending && !is_there_session){
+            goto("/login",{replaceState:true})
         }
-    });
+    })
 
 </script>
 
