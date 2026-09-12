@@ -2,8 +2,16 @@ package com.example.app;
 
 import android.webkit.CookieManager;
 import com.getcapacitor.BridgeActivity;
+import androidx.core.view.WindowCompat;
+import android.os.Bundle;
 
 public class MainActivity extends BridgeActivity {
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        WindowCompat.enableEdgeToEdge(getWindow());
+    }
+
     // Forces a synchronous flush whenever the app is paused or backgrounded
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

@@ -34,6 +34,9 @@
 	
 	div{
         height:100svh;
+		padding-top:env(safe-area-inset-top, 0px);
+		padding-left:env(safe-area-inset-left, 0px);
+		padding-right:env(safe-area-inset-right, 0px);
 		--navigation-height:3rem;
 		--navigation-background-color:var(--bs-secondary-bg);
 
@@ -48,8 +51,10 @@
 		Show footer on mobile.
 		*/
 		& footer{
-			height:var(--navigation-height);
-			background-color: var(--navigation-background-color);
+			box-sizing:content-box;
+			height: var(--navigation-height);
+    		padding-bottom: env(safe-area-inset-bottom, 0px);
+    		background-color: var(--navigation-background-color);
 		}
 		
 		/**
