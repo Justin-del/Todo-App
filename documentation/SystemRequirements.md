@@ -25,6 +25,7 @@
 </ul>
 
 ### Todo Management Module
+Precondition:User must be signed in.
 <ul>
     <li><strong>FR-TD-01:</strong> Users can create a todo.</li>
     <li><strong>FR-TD-02:</strong> Users can edit todos that they owned.</li>
