@@ -53,9 +53,9 @@ describe("FR-TD-03 tests",()=>{
 
         //Send 2 todos for test_user_1. Send 1 todo for test_user_2.
         await db.insertInto("todo").values([
-            {id:crypto.randomUUID(),title:'Todo 1',description:'This is a description.', is_completed:0, user_id:signUpResult1.user.id,created_at:new Date().toISOString(), updated_at:new Date().toISOString()},
-            {id:crypto.randomUUID(),title:'Todo 2',description:'', is_completed:1, user_id:signUpResult1.user.id,created_at:new Date().toISOString(), updated_at:new Date().toISOString()},
-            {id:crypto.randomUUID(),title:'Todo 3',description:'', is_completed:0, user_id:signUpResult2.user.id,created_at:new Date().toISOString(), updated_at:new Date().toISOString()}
+            {id:crypto.randomUUID(),title:'Todo 1',description:'This is a description.', is_completed:0, user_id:signUpResult1.user.id},
+            {id:crypto.randomUUID(),title:'Todo 2',description:'', is_completed:1, user_id:signUpResult1.user.id},
+            {id:crypto.randomUUID(),title:'Todo 3',description:'', is_completed:0, user_id:signUpResult2.user.id}
         ]).execute();
 
         //Query protected route endpoint with the cookie

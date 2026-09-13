@@ -3,6 +3,12 @@
  * Please do not edit it manually.
  */
 
+import type { ColumnType } from "kysely";
+
+export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
+  ? ColumnType<S, I | undefined, U>
+  : ColumnType<T, T | undefined, T>;
+
 export interface Account {
   accessToken: string | null;
   accessTokenExpiresAt: string | null;
@@ -31,12 +37,12 @@ export interface Session {
 }
 
 export interface Todo {
-  created_at: string;
+  created_at: Generated<string>;
   description: string;
   id: string;
   is_completed: number;
   title: string;
-  updated_at: string;
+  updated_at: string | null;
   user_id: string | null;
 }
 

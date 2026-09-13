@@ -3,10 +3,10 @@
   "type": "module",
   "scripts": {
     "dev": "set NODE_ENV=debug && tsx watch src/index.ts",
-    "test":"sqlite3 Test.sqlite<CreateTables.sql && set NODE_ENV=test && vitest run ",
+    "test":"del Test.sqlite && sqlite3 Test.sqlite<CreateTables.sql && set NODE_ENV=test && vitest run ",
     "build": "tsc",
     "start": "node dist/index.js",
-    "generate-database-types": "kysely-codegen --dialect sqlite --url ./Database.sqlite --out-file ./src/db/types.ts"
+    "regenerate-db-and-kysely-types": "del Database.sqlite && sqlite3 Database.sqlite<CreateTables.sql && kysely-codegen --dialect sqlite --url ./Database.sqlite --out-file ./src/db/types.ts"
   },
   "dependencies": {
     "@hono/node-server": "^2.1.1",
