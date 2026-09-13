@@ -3,8 +3,9 @@ import { Hono } from 'hono'
 import { auth } from './auth.js'
 import { cors } from 'hono/cors';
 import { useEnvironmentVariables } from './environment_variables.js';
+import { todosRoute } from './todos.js';
 
-const app = new Hono()
+export const app = new Hono()
 
 useEnvironmentVariables();
 
@@ -17,7 +18,8 @@ app.use(
 	}), 
 ); 
 
-app.all("/api/auth/*", (c) => auth.handler(c.req.raw)); 
+app.all("/api/auth/*", (c) => auth.handler(c.req.raw));
+app.route("/api/todos", todosRoute);
 
 serve({
   fetch: app.fetch,

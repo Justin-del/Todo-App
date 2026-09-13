@@ -1,12 +1,12 @@
 import { betterAuth } from "better-auth";
-import Database from 'better-sqlite3'
 import { useEnvironmentVariables } from "./environment_variables.js";
+import { sqlite } from "./db/database.js";
 
 useEnvironmentVariables()
 
 export const auth = betterAuth({
   baseURL:'https://localhost:3000',
-  database:new Database('Database.sqlite'),
+  database:sqlite,
   emailAndPassword:{
     enabled:true,
     minPasswordLength:15
