@@ -43,7 +43,7 @@ export interface Todo {
   is_completed: number;
   title: string;
   updated_at: string | null;
-  user_id: string | null;
+  user_id: string;
 }
 
 export interface User {
