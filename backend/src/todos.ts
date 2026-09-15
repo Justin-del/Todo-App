@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { auth } from "./auth.js";
-import { getAllTodosThatBelongToUserQuery, insertTodoQuery, updateTodoQuery } from "./db/todos.js";
+import { getAllTodosThatBelongToUserQuery, insertTodoQuery, toggleTodoCompletionStatusQuery, updateTodoQuery } from "./db/todos.js";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
 
@@ -52,6 +52,9 @@ const updateTodoSchema = z.object({
   is_completed:z.union([z.literal(0), z.literal(1)]),
 })
 
+/**
+ * This route should satisfy SystemRequirements.md/FR-TD-02 (Users can edit todos that they owned)
+ */
 todosRoute.put("/",zValidator("json",updateTodoSchema),async(c)=>{
   const user = c.get('user');
   const data = c.req.valid('json');
@@ -60,8 +63,24 @@ todosRoute.put("/",zValidator("json",updateTodoSchema),async(c)=>{
   return c.json({message:'Successfully updated todo!'}, 200);
 })
 
+const toggleTodoCompletionStatusSchema = z.object({
+  id:z.uuid(),
+  is_completed:z.union([z.literal(0),z.literal(1)])
+})
+
 /**
- * This route should satisfy SystemRequirements.md/FR-TD-03. (Users can view the todos that they owned)
+ * This route should satisfy SystemRequirements.md/FR-TD-03 (Users can toggle the completion status of todos that they owned.)
+ */
+todosRoute.patch("/completion-status", zValidator("json", toggleTodoCompletionStatusSchema), async(c)=>{
+  const user = c.get('user');
+  const data = c.req.valid('json');
+
+  await toggleTodoCompletionStatusQuery(data.id,data.is_completed, user.id).execute();
+  return c.json({message:'Successfully updated todo!'}, 200);
+})
+
+/**
+ * This route should satisfy SystemRequirements.md/FR-TD-04. (Users can view the todos that they owned)
  */
 todosRoute.get("/", async (c)=>{
    const user = c.get('user');

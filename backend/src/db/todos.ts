@@ -34,8 +34,14 @@ export function updateTodoQuery(id:string, title:string, description: string, is
     }).where("id","=",id).where("user_id","=",user_id);
 }
 
+export function toggleTodoCompletionStatusQuery(id: string, is_completed:0|1, user_id:string){
+    return db.updateTable("todo").set({
+        is_completed
+    }).where("id","=",id).where("user_id","=",user_id);
+}
+
 /**
- * This query should satisfy the data requirements of SystemRequirements.md/FR-TD-03.
+ * This query should satisfy the data requirements of SystemRequirements.md/FR-TD-04.
  * @param user_id 
  * @returns 
  */

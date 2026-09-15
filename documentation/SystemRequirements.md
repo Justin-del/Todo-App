@@ -29,6 +29,7 @@ Precondition:User must be signed in.
 <ul>
     <li><strong>FR-TD-01:</strong> Users can create a todo (id (created randomly using uuid on frontend), title, description, is_completed, user_id).</li>
     <li><strong>FR-TD-02:</strong> Users can edit todos that they owned (title, description, is_completed).</li>
-    <li><strong>FR-TD-03:</strong> Users can view the todos (title, description, is_completed) that they owned.</li>
-    <li><strong>FR-TD-04:</strong> Users can remove the todos that they owned.</li>
+    <li><strong>FR-TD-03: </strong> Users can toggle the completion status of the todos that they owned.</li>
+    <li><strong>FR-TD-04:</strong> Users can view the todos (title, description, is_completed) that they owned.</li>
+    <li><strong>FR-TD-05:</strong> Users can remove the todos that they owned.</li>
 </ul>
