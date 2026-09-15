@@ -48,3 +48,7 @@ export function toggleTodoCompletionStatusQuery(id: string, is_completed:0|1, us
 export function getAllTodosThatBelongToUserQuery(user_id:string){
     return db.selectFrom("todo").select(["id", "title", "description", "is_completed"]).where("user_id", "=", user_id);
 }
+
+export function deleteTodoQuery(id:string,user_id:string){
+    return db.deleteFrom('todo').where("id","=",id).where("user_id","=",user_id);
+}

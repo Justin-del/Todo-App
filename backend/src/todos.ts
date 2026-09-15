@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { auth } from "./auth.js";
-import { getAllTodosThatBelongToUserQuery, insertTodoQuery, toggleTodoCompletionStatusQuery, updateTodoQuery } from "./db/todos.js";
+import { deleteTodoQuery, getAllTodosThatBelongToUserQuery, insertTodoQuery, toggleTodoCompletionStatusQuery, updateTodoQuery } from "./db/todos.js";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
 
@@ -86,4 +86,18 @@ todosRoute.get("/", async (c)=>{
    const user = c.get('user');
    const todos = await getAllTodosThatBelongToUserQuery(user.id).execute();
    return c.json({todos});
+})
+
+const deleteTodoSchema = z.object({
+  id:z.uuid(),
+})
+
+/**
+ * This route should satisfy SystemRequirements.md/FR-TD-05. (Users can remove the todos that they owned.)
+ */
+todosRoute.delete("/",zValidator("json",deleteTodoSchema),async(c)=>{
+  const user = c.get('user');
+  const data = c.req.valid('json');
+  await deleteTodoQuery(data.id, user.id).execute();
+  return c.json('Successfully deleted todo.', 200);
 })
