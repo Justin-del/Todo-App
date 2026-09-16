@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"debug-build:android":"set NODE_ENV=debug && vite build && npx capacitor run android",
+		"debug-build:android": "set NODE_ENV=debug && vite build && npx capacitor run android",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -39,6 +39,7 @@
 		"@capacitor/core": "^8.5.1",
 		"better-auth": "^1.7.3",
 		"bootstrap": "^5.3.8",
+		"hono": "^4.13.8",
 		"zod": "^4.5.4"
 	}
 }

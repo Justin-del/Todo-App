@@ -5,21 +5,18 @@ import { cors } from 'hono/cors';
 import { useEnvironmentVariables } from './environment_variables.js';
 import { todosRoute } from './todos.js';
 
-export const app = new Hono()
-
 useEnvironmentVariables();
 
-app.use( 
+export const app = new Hono().use( 
 	"/api/auth/*", 
 	cors({ 
 		origin: [process.env.FRONTEND_URL as string, process.env.MOBILE_APP_URL as string],
 		credentials: true, 
 		allowHeaders:['Content-Type']
 	}), 
-); 
+).all("/api/auth/*", (c) => auth.handler(c.req.raw)).route("/api/todos", todosRoute); 
 
-app.all("/api/auth/*", (c) => auth.handler(c.req.raw));
-app.route("/api/todos", todosRoute);
+export type AppType = typeof app;
 
 serve({
   fetch: app.fetch,

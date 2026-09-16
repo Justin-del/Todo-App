@@ -11,9 +11,30 @@ type Env = {
   };
 };
 
-export const todosRoute = new Hono<Env>();
+const createTodoSchema = z.object({
+  id:z.uuid(),
+  title:z.string().trim().min(1),
+  description:z.string(),
+  is_completed:z.union([z.literal(0), z.literal(1)]),
+});
 
-todosRoute.use("*", async(c,next)=>{
+const updateTodoSchema = z.object({
+  id:z.uuid(),
+  title:z.string().trim().min(1),
+  description:z.string(),
+  is_completed:z.union([z.literal(0), z.literal(1)]),
+})
+
+const toggleTodoCompletionStatusSchema = z.object({
+  id:z.uuid(),
+  is_completed:z.union([z.literal(0),z.literal(1)])
+})
+
+const deleteTodoSchema = z.object({
+  id:z.uuid(),
+})
+
+export const todosRoute = new Hono<Env>().use("*", async(c,next)=>{
     const session = await auth.api.getSession({
         headers:c.req.raw.headers
     })
@@ -26,76 +47,33 @@ todosRoute.use("*", async(c,next)=>{
     // Attach session data to request context
     c.set('user',session.user);
     await next();
-});
-
-const createTodoSchema = z.object({
-  id:z.uuid(),
-  title:z.string().trim().min(1),
-  description:z.string(),
-  is_completed:z.union([z.literal(0), z.literal(1)]),
-});
-
-/**
- * This route should satisfy SystemRequirements.md/FR-TD-01. (Users can create todo)
- */
-todosRoute.post("/",zValidator("json",createTodoSchema),async(c)=>{
+}).post("/",zValidator("json",createTodoSchema),async(c)=>{
+  // This route should satisfy SystemRequirements.md/FR-TD-01. (Users can create todo)
   const user = c.get('user');
   const data = c.req.valid('json');
   await insertTodoQuery(data.id, data.title, data.description, data.is_completed, user.id).execute();
   return c.json({message:'Successfully added todo!'},201)
-})
-
-const updateTodoSchema = z.object({
-  id:z.uuid(),
-  title:z.string().trim().min(1),
-  description:z.string(),
-  is_completed:z.union([z.literal(0), z.literal(1)]),
-})
-
-/**
- * This route should satisfy SystemRequirements.md/FR-TD-02 (Users can edit todos that they owned)
- */
-todosRoute.put("/",zValidator("json",updateTodoSchema),async(c)=>{
+}).put("/",zValidator("json",updateTodoSchema),async(c)=>{
+  // This route should satisfy SystemRequirements.md/FR-TD-02 (Users can edit todos that they owned)
   const user = c.get('user');
   const data = c.req.valid('json');
 
   await updateTodoQuery(data.id, data.title, data.description, data.is_completed, user.id).execute();
   return c.json({message:'Successfully updated todo!'}, 200);
-})
-
-const toggleTodoCompletionStatusSchema = z.object({
-  id:z.uuid(),
-  is_completed:z.union([z.literal(0),z.literal(1)])
-})
-
-/**
- * This route should satisfy SystemRequirements.md/FR-TD-03 (Users can toggle the completion status of todos that they owned.)
- */
-todosRoute.patch("/completion-status", zValidator("json", toggleTodoCompletionStatusSchema), async(c)=>{
+}).patch("/completion-status", zValidator("json", toggleTodoCompletionStatusSchema), async(c)=>{
+  // This route should satisfy SystemRequirements.md/FR-TD-03 (Users can toggle the completion status of todos that they owned.)
   const user = c.get('user');
   const data = c.req.valid('json');
 
   await toggleTodoCompletionStatusQuery(data.id,data.is_completed, user.id).execute();
   return c.json({message:'Successfully updated todo!'}, 200);
-})
-
-/**
- * This route should satisfy SystemRequirements.md/FR-TD-04. (Users can view the todos that they owned)
- */
-todosRoute.get("/", async (c)=>{
-   const user = c.get('user');
-   const todos = await getAllTodosThatBelongToUserQuery(user.id).execute();
-   return c.json({todos});
-})
-
-const deleteTodoSchema = z.object({
-  id:z.uuid(),
-})
-
-/**
- * This route should satisfy SystemRequirements.md/FR-TD-05. (Users can remove the todos that they owned.)
- */
-todosRoute.delete("/",zValidator("json",deleteTodoSchema),async(c)=>{
+}).get("/", async (c)=>{
+  //  This route should satisfy SystemRequirements.md/FR-TD-04. (Users can view the todos that they owned)
+  const user = c.get('user');
+  const todos = await getAllTodosThatBelongToUserQuery(user.id).execute();
+  return c.json({todos});
+}).delete("/",zValidator("json",deleteTodoSchema),async(c)=>{
+  // This route should satisfy SystemRequirements.md/FR-TD-05. (Users can remove the todos that they owned.)
   const user = c.get('user');
   const data = c.req.valid('json');
   await deleteTodoQuery(data.id, user.id).execute();
