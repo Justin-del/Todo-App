@@ -8,7 +8,7 @@ import { todosRoute } from './todos.js';
 useEnvironmentVariables();
 
 export const app = new Hono().use( 
-	"/api/auth/*", 
+	"/api/*", 
 	cors({ 
 		origin: [process.env.FRONTEND_URL as string, process.env.MOBILE_APP_URL as string],
 		credentials: true, 

@@ -42,11 +42,12 @@ export function toggleTodoCompletionStatusQuery(id: string, is_completed:0|1, us
 
 /**
  * This query should satisfy the data requirements of SystemRequirements.md/FR-TD-04.
+ * This query would return todos that belong to the user ordered by created_at asc when executed.
  * @param user_id 
  * @returns 
  */
 export function getAllTodosThatBelongToUserQuery(user_id:string){
-    return db.selectFrom("todo").select(["id", "title", "description", "is_completed"]).where("user_id", "=", user_id);
+    return db.selectFrom("todo").select(["id", "title", "description", "is_completed"]).where("user_id", "=", user_id).orderBy("created_at","asc");
 }
 
 export function deleteTodoQuery(id:string,user_id:string){

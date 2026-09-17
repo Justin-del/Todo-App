@@ -1,12 +1,13 @@
 <script lang="ts">
-    import type {todo} from "../../../shared_types_between_frontend_and_backend"
+	import type { todo } from "../types/todo";
+
     const {task}:{task:todo} = $props();
 </script>
 
 <div class="card w-100 p-3">
-    <input type="checkbox" aria-label="completion status"  checked={task.is_completed} aria-describedby="task-title-{task.id}"/>
+    <input type="checkbox" aria-label="completion status"  checked={task.is_completed===1} aria-describedby="task-title-{task.id}"/>
     <div>
-        <div id="task-title-{task.id}" class="card-title fw-bold {task.is_completed?"text-decoration-line-through":""}">{task.title}</div>
+        <div id="task-title-{task.id}" class="card-title fw-bold {(task.is_completed===1)?"text-decoration-line-through":""}">{task.title}</div>
         <div class="small">{task.description}</div>
     </div>
     <button title="Delete todo" aria-label="Delete todo"  aria-describedby="task-title-{task.id}">

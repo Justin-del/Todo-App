@@ -83,7 +83,7 @@ describe("FR-TD-01 tests (Users can create todos)", () => {
         expect(response1.status).toEqual(201);
         expect(response2.status).toEqual(201);
 
-        const saved_todos = await getAllTodosThatBelongToUserQuery(signUpResult.user.id).orderBy("created_at", "asc").execute();
+        const saved_todos = await getAllTodosThatBelongToUserQuery(signUpResult.user.id).execute();
 
         expect(saved_todos.length).toEqual(2);
 
@@ -161,7 +161,7 @@ describe("FR-TD-02 tests (Users can edit todos that they owned)", () => {
         //Assertions
         expect(response.status).toEqual(200);
 
-        const saved_todos = await getAllTodosThatBelongToUserQuery(signUpResult.user.id).orderBy("created_at", "asc").execute();
+        const saved_todos = await getAllTodosThatBelongToUserQuery(signUpResult.user.id).execute();
 
         expect(saved_todos.length).toEqual(2);
 
@@ -255,7 +255,7 @@ describe("FR-TD-03 tests (Users can toggle the completion status of todos that t
         expect(response_1.status).toEqual(200);
         expect(response_2.status).toEqual(200);
 
-        const saved_todos = await getAllTodosThatBelongToUserQuery(signUpResult.user.id).orderBy('created_at', 'asc').execute();
+        const saved_todos = await getAllTodosThatBelongToUserQuery(signUpResult.user.id).execute();
 
         expect(saved_todos.length).toEqual(3);
 

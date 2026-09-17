@@ -1,15 +1,28 @@
 <script lang="ts">
-    import type {todo} from "../../../../shared_types_between_frontend_and_backend"
 	import PageTitle from "../../components/PageTitle.svelte";
 	import Todo from "../../components/Todo.svelte";
 	import { getIsAuthPending, getIsLoggedIn} from "$lib/AuthClient.svelte";
 	import { goto } from "$app/navigation";
 	import { browser } from "$app/env";
-    /**
-     * Generate fake todo data for now.
-     */
-    const todos:todo[] = $state([{id:crypto.randomUUID(),title:'This is a todo.', is_completed:true, created_at:new Date(), updated_at:new Date(),description:'This is the description of the todo.'},{id:crypto.randomUUID(),title:'Chiong Kai Yuan', is_completed:false, created_at:new Date(), updated_at:new Date(),description:'She has a sexy ass. I dream of fucking her butt.'},{id:crypto.randomUUID(),title:'Chiong Kai Yuan', is_completed:false, created_at:new Date(), updated_at:new Date(),description:'She has a sexy ass. I dream of fucking her butt.'}])  
+	import { getTodos } from "../../api/client";
+	import { onMount } from "svelte";
+	import type { todo } from "../../types/todo";
 
+    let todos:todo[] = $state([])
+
+    onMount(async()=>{
+        const response = await getTodos();
+        if (response.status===200){
+            const {todos:todos_from_server} = await response.json();
+            todos = todos_from_server as {
+                id:string;
+                title:string;
+                description:string;
+                is_completed:0|1
+            }[];
+        }
+    });
+    
     $effect(()=>{
         if (!getIsAuthPending())
             if (browser && !getIsLoggedIn()){
