@@ -4,7 +4,7 @@
 	import { getIsAuthPending, getIsLoggedIn } from '$lib/AuthClient.svelte';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/env';
-	import { getTodos, removeTodo } from '../../api/client';
+	import { getTodos, removeTodo, toggleTodoCompletionStatus } from '../../api/client';
 	import { onMount } from 'svelte';
 	import type { todo } from '../../types/todo';
 	import { page } from '$app/state';
@@ -65,7 +65,19 @@
 	<div class="flex-grow-1 overflow-auto">
 		{#each todos as todo (todo.id)}
 			<div class="d-contents mb-3">
-				<Todo task={todo} onClickDeleteButton={() => goto(`?modal_type=delete&todo_id=${todo.id}`,{replaceState:true})}
+				<Todo task={todo} onClickDeleteButton={() => goto(`?modal_type=delete&todo_id=${todo.id}`,{replaceState:true})} onToggleCompletionStatus={(completion_status)=>{
+					todos = todos.map((t)=>{
+						if (t.id === todo.id){
+							return {
+								...t,
+								is_completed:completion_status
+							}
+						}
+						return t;
+					})
+
+					toggleTodoCompletionStatus(todo.id, completion_status)
+				}}
 				></Todo>
 			</div>
 		{/each}

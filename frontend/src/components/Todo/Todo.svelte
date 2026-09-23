@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { todo } from "../../types/todo";
-    const {task, onClickDeleteButton}:{task:todo,onClickDeleteButton:()=>void} = $props();
+    const {task, onClickDeleteButton, onToggleCompletionStatus}:{task:todo,onClickDeleteButton:()=>void, onToggleCompletionStatus:(completion_status:1|0)=>void} = $props();
 </script>
 
 <div class="card w-100 p-3">
-    <input type="checkbox" aria-label="completion status"  checked={task.is_completed===1} aria-describedby="task-title-{task.id}"/>
+    <input type="checkbox" aria-label="completion status"  checked={task.is_completed===1} aria-describedby="task-title-{task.id}" onchange={(e)=>onToggleCompletionStatus(e.currentTarget.checked?1:0)}/>
     <div>
         <div id="task-title-{task.id}" class="card-title fw-bold {(task.is_completed===1)?"text-decoration-line-through":""}">{task.title}</div>
         <div class="small">{task.description}</div>
