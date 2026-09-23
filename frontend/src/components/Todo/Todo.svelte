@@ -1,7 +1,6 @@
 <script lang="ts">
-	import type { todo } from "../types/todo";
-
-    const {task}:{task:todo} = $props();
+	import type { todo } from "../../types/todo";
+    const {task, onClickDeleteButton}:{task:todo,onClickDeleteButton:()=>void} = $props();
 </script>
 
 <div class="card w-100 p-3">
@@ -10,7 +9,7 @@
         <div id="task-title-{task.id}" class="card-title fw-bold {(task.is_completed===1)?"text-decoration-line-through":""}">{task.title}</div>
         <div class="small">{task.description}</div>
     </div>
-    <button title="Delete todo" aria-label="Delete todo"  aria-describedby="task-title-{task.id}">
+    <button onclick={onClickDeleteButton} title="Delete todo" aria-label="Delete todo"  aria-describedby="task-title-{task.id}">
         <img src="/Bin.svg" alt=""/>
     </button>
 </div>
