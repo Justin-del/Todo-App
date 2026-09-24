@@ -8,11 +8,11 @@ import { db } from "./database.js";
  * @param is_completed
  * @param user_id 
  */
-export function insertTodoQuery(id:string, title:string, description:string, is_completed:0|1, user_id:string){
+export function insertTodoQuery(id:string, title:string, description:string,  user_id:string){
     return db.insertInto("todo").values({
         id,
         description,
-        is_completed,
+        is_completed:0,
         title,
         user_id
     });

@@ -16,12 +16,11 @@ const client = hc<AppType>(PUBLIC_SERVER_URL,{
  * @param is_completed 
  * @returns 
  */
-export async function addTodo(id:string, title:string, description:string, is_completed:0|1){
+export async function addTodo(id:string, title:string, description:string){
     const response = await client.api.todos.$post({
         json:{id,
         title,
         description,
-        is_completed
         }
     })
     return response;

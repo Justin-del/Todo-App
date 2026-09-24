@@ -15,7 +15,6 @@ const createTodoSchema = z.object({
   id:z.uuid(),
   title:z.string().trim().min(1),
   description:z.string(),
-  is_completed:z.union([z.literal(0), z.literal(1)]),
 });
 
 const updateTodoSchema = z.object({
@@ -51,7 +50,7 @@ export const todosRoute = new Hono<Env>().use("*", async(c,next)=>{
   // This route should satisfy SystemRequirements.md/FR-TD-01. (Users can create todo)
   const user = c.get('user');
   const data = c.req.valid('json');
-  await insertTodoQuery(data.id, data.title, data.description, data.is_completed, user.id).execute();
+  await insertTodoQuery(data.id, data.title, data.description, user.id).execute();
   return c.json({message:'Successfully added todo!'},201)
 }).put("/",zValidator("json",updateTodoSchema),async(c)=>{
   // This route should satisfy SystemRequirements.md/FR-TD-02 (Users can edit todos that they owned)

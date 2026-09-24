@@ -51,13 +51,11 @@ describe("FR-TD-01 tests (Users can create todos)", () => {
                 id: crypto.randomUUID(),
                 title: 'Todo 1',
                 description: '',
-                is_completed: 0
             },
             {
                 id: crypto.randomUUID(),
                 title: 'Todo 2',
-                description: 'This is a description.',
-                is_completed: 1
+                description: 'This is a description.'
             }]
 
         //Add 2 todos for the user.
@@ -87,8 +85,8 @@ describe("FR-TD-01 tests (Users can create todos)", () => {
 
         expect(saved_todos.length).toEqual(2);
 
-        expect(saved_todos[0]).toEqual(todos[0]);
-        expect(saved_todos[1]).toEqual(todos[1]);
+        expect(saved_todos[0]).toEqual({...todos[0],is_completed:0});
+        expect(saved_todos[1]).toEqual({...todos[1],is_completed:0});
     })
 })
 
@@ -138,7 +136,7 @@ describe("FR-TD-02 tests (Users can edit todos that they owned)", () => {
             }]
 
         for (const todo of todos) {
-            await insertTodoQuery(todo.id, todo.title, todo.description, todo.is_completed as 0 | 1, signUpResult.user.id).execute();
+            await db.insertInto("todo").values({...todo,user_id:signUpResult.user.id}).execute();
         }
 
         const update_payload = {
@@ -226,7 +224,7 @@ describe("FR-TD-03 tests (Users can toggle the completion status of todos that t
         ]
 
         for (const todo of todos) {
-            await insertTodoQuery(todo.id, todo.title, todo.description, todo.is_completed as 0 | 1, signUpResult.user.id).execute();
+            await db.insertInto("todo").values({...todo,user_id:signUpResult.user.id}).execute();
         }
 
         //Mark the first todo as completed.
@@ -258,22 +256,9 @@ describe("FR-TD-03 tests (Users can toggle the completion status of todos that t
         const saved_todos = await getAllTodosThatBelongToUserQuery(signUpResult.user.id).execute();
 
         expect(saved_todos.length).toEqual(3);
-
-        expect(saved_todos[0].id).toEqual(todos[0].id);
-        expect(saved_todos[1].id).toEqual(todos[1].id);
-        expect(saved_todos[2].id).toEqual(todos[2].id);
-
-        expect(saved_todos[0].title).toEqual(todos[0].title);
-        expect(saved_todos[1].title).toEqual(todos[1].title);
-        expect(saved_todos[2].title).toEqual(todos[2].title);
-
-        expect(saved_todos[0].description).toEqual(todos[0].description);
-        expect(saved_todos[1].description).toEqual(todos[1].description);
-        expect(saved_todos[2].description).toEqual(todos[2].description);
-
-        expect(saved_todos[0].is_completed).toEqual(1);
-        expect(saved_todos[1].is_completed).toEqual(1);
-        expect(saved_todos[2].is_completed).toEqual(0);
+        expect(saved_todos[0]).toEqual({...todos[0],is_completed:1});
+        expect(saved_todos[1]).toEqual({...todos[1],is_completed:1});
+        expect(saved_todos[2]).toEqual({...todos[2],is_completed:0});
     })
 });
 
@@ -397,7 +382,7 @@ describe("FR-TD-05 tests (Users can remove the todos that they owned.", () => {
         ]
 
         for (const todo of todos) {
-            await insertTodoQuery(todo.id, todo.title, todo.description, todo.is_completed as 0 | 1, signUpResult.user.id).execute();
+            await insertTodoQuery(todo.id, todo.title, todo.description, signUpResult.user.id).execute();
         }
 
         //Delete only the second todo.

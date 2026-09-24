@@ -4,19 +4,30 @@
 	import { getIsAuthPending, getIsLoggedIn } from '$lib/AuthClient.svelte';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/env';
-	import { getTodos, removeTodo, toggleTodoCompletionStatus } from '../../api/client';
+	import { addTodo, getTodos, removeTodo, toggleTodoCompletionStatus } from '../../api/client';
 	import { onMount } from 'svelte';
 	import type { todo } from '../../types/todo';
 	import { page } from '$app/state';
 	import DeleteTodoModal from '../../components/Todo/DeleteTodoModal.svelte';
+	import AddTodoModal from '../../components/Todo/AddTodoModal.svelte';
 
 	let todos: todo[] = $state([]);
 
-	type modal_props = {
-		modal_type: 'delete';
-		todo_title: string;
-		todo_id: string;
-	};
+	type modal_props =
+		| {
+				modal_type: 'delete';
+				todo_title: string;
+				todo_id: string;
+		  }
+		| { modal_type: 'add'; 
+		    /**
+			 * The initial todo title shown when the modal is shown.
+			 */
+			todo_title: string; 
+			/**
+			 * The initial todo description shown when the modal is shown.
+			*/
+			todo_description: string };
 
 	let modal: modal_props | undefined = $state();
 
@@ -47,9 +58,17 @@
 					};
 				}
 			}
+		} else if (modal_type === 'add') {
+			const todo_title = page.url.searchParams.get('todo_title') ?? '';
+			const todo_description = page.url.searchParams.get('todo_description') ?? '';
+			modal = {
+				modal_type:'add',
+				todo_title,
+				todo_description
+			}
 		} else {
-            modal = undefined;
-        }
+			modal = undefined;
+		}
 	});
 
 	$effect(() => {
@@ -65,36 +84,64 @@
 	<div class="flex-grow-1 overflow-auto">
 		{#each todos as todo (todo.id)}
 			<div class="d-contents mb-3">
-				<Todo task={todo} onClickDeleteButton={() => goto(`?modal_type=delete&todo_id=${todo.id}`,{replaceState:true})} onToggleCompletionStatus={(completion_status)=>{
-					todos = todos.map((t)=>{
-						if (t.id === todo.id){
-							return {
-								...t,
-								is_completed:completion_status
+				<Todo
+					task={todo}
+					onClickDeleteButton={() =>
+						goto(`?modal_type=delete&todo_id=${todo.id}`, { replaceState: true })}
+					onToggleCompletionStatus={(completion_status) => {
+						todos = todos.map((t) => {
+							if (t.id === todo.id) {
+								return {
+									...t,
+									is_completed: completion_status
+								};
 							}
-						}
-						return t;
-					})
+							return t;
+						});
 
-					toggleTodoCompletionStatus(todo.id, completion_status)
-				}}
+						toggleTodoCompletionStatus(todo.id, completion_status);
+					}}
 				></Todo>
 			</div>
 		{/each}
 	</div>
-	<button class="btn btn-primary" style="width:fit-content;">Add todo</button>
+	<button
+		class="btn btn-primary"
+		style="width:fit-content;"
+		onclick={() => {
+			goto('/todos?modal_type=add', { replaceState: true });
+		}}>Add todo</button
+	>
 </div>
 
 {#if modal?.modal_type === 'delete'}
 	<DeleteTodoModal
 		onDelete={async () => {
-			todos = todos.filter((todo) => todo.id !== modal?.todo_id);
-			goto(`/todos`,{replaceState:true})
+			if (modal?.modal_type!=='delete') return;
+			todos = todos.filter((todo) => modal?.modal_type==='delete' && modal?.todo_id!==todo.id);
+			goto(`/todos`, { replaceState: true });
 			if (typeof modal?.todo_id === 'string') await removeTodo(modal?.todo_id);
 		}}
 		onCancel={() => {
-			goto(`/todos`,{replaceState:true})
+			goto(`/todos`, { replaceState: true });
 		}}
 		todo_title={modal.todo_title}
 	></DeleteTodoModal>
+{:else if modal?.modal_type === 'add'}
+		<AddTodoModal onAddTodo={
+			(title:string, description:string)=>{
+				const new_todo:todo = {
+					id:crypto.randomUUID(),
+					title,
+					description,
+					is_completed:0
+				}
+
+				todos = [...todos,new_todo];
+
+				addTodo(new_todo.id,title,description);
+			}
+		} onCancel={()=>{goto("/todos",{replaceState:true})}} todo_title={modal?.todo_title} todo_description={modal?.todo_description}>
+
+		</AddTodoModal>
 {/if}

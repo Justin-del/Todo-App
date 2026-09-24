@@ -6,7 +6,7 @@
 <div class="card w-100 p-3">
     <input type="checkbox" aria-label="completion status"  checked={task.is_completed===1} aria-describedby="task-title-{task.id}" onchange={(e)=>onToggleCompletionStatus(e.currentTarget.checked?1:0)}/>
     <div>
-        <div id="task-title-{task.id}" class="card-title fw-bold {(task.is_completed===1)?"text-decoration-line-through":""}">{task.title}</div>
+        <div id="task-title-{task.id}" class="card-title fw-bold {(task.is_completed===1)?"text-decoration-line-through":""} {(task.description.trim()==='')?'mb-0':''}">{task.title}</div>
         <div class="small">{task.description}</div>
     </div>
     <button onclick={onClickDeleteButton} title="Delete todo" aria-label="Delete todo"  aria-describedby="task-title-{task.id}">
