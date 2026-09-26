@@ -59,14 +59,13 @@
 						todo_state.description = element.currentTarget.value;
 					}}>{todo_state.description}</textarea
 				>
-				<div class="mb-3 form-check">
+				<div class="mb-3">
 					<input
 						type="checkbox"
-						class="form-check-input"
 						id="is-completed"
 						bind:checked={todo_state.is_completed}
 					/>
-					<label class="form-check-label" for="is-completed">Completed</label>
+					<label class="ms-2 form-check-label" for="is-completed">Completed</label>
 				</div>
 			</div>
 			<div class="modal-footer">
